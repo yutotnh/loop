@@ -1,0 +1,17 @@
+[package]
+name = "loop-command"
+version = "0.1.0"
+edition = "2021"
+authors = ["yutotnh <57719497+yutotnh@users.noreply.github.com>"]
+description = "Loop execution of simple commands"
+
+[[bin]]
+name = "loop"
+path = "src/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.2.1", features = ["derive"] }
+nix = "0.26.2"
+clap_complete = "4.2.0"
