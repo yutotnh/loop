@@ -91,7 +91,7 @@ Arguments:
 
 Options:
       --count <COUNT>       Number of times to greet [default: inf]
-      --shell <SHELL>       Shell to run instead of the current shell
+      --shell <SHELL>       Shell to run [default: sh]
       --interval <SECONDS>  Specify update interval [default: 0]
       --completion <SHELL>  Generate shell completion script for loop [possible values: bash, elvish, fish, powershell, zsh]
   -h, --help                Print help

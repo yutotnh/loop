@@ -14,9 +14,9 @@ struct Opt {
     #[arg(long, default_value_t = f64::INFINITY, value_hint = ValueHint::Other)]
     count: f64,
 
-    /// Shell to run instead of the current shell
-    #[arg(long, value_hint = ValueHint::ExecutablePath)]
-    shell: Option<String>,
+    /// Shell to run
+    #[arg(long, default_value = "sh", value_hint = ValueHint::ExecutablePath)]
+    shell: String,
 
     /// Specify update interval
     #[arg(long, default_value_t = 0.0, value_hint = ValueHint::Other, value_name = "SECONDS")]
@@ -27,22 +27,13 @@ struct Opt {
     completion: Option<Shell>,
 }
 
-/// 現在使用しているシェルを返す
-fn shell() -> String {
-    format!("/proc/{}/exe", nix::unistd::getppid())
-}
-
+/// 指定されたシェルの補完スクリプトを生成し、標準出力に出力する
 fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
     generate(gen, cmd, cmd.get_name().to_string(), &mut std::io::stdout());
 }
 
 fn main() {
     let args = Opt::parse();
-
-    let shell = match args.shell {
-        None => shell(),
-        Some(i) => i,
-    };
 
     let loop_count = args.count as u128;
 
@@ -51,7 +42,7 @@ fn main() {
         print_completions(shell, &mut cmd);
     } else {
         for _ in 0..loop_count {
-            std::process::Command::new(&shell)
+            std::process::Command::new(&args.shell)
                 .arg("-c")
                 .arg(&args.command.join(" "))
                 .status()
